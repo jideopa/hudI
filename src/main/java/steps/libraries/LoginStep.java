@@ -5,7 +5,7 @@ import base.HudIBase;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import pages.LoginPage;
-import utils.CustomerAccount;
+import pojos.Login;
 
 import java.time.Duration;
 
@@ -15,15 +15,20 @@ public class LoginStep extends HudIBase {
 
     private WebDriverWait wait = new WebDriverWait(driver, Duration.ofMillis(30000));
 
-    public void completeLoginForm() {
-        loginPage.emailInputField.sendKeys(CustomerAccount.EXISTING_Customer.getEmailAddress());
-        loginPage.passwordInputField.sendKeys(CustomerAccount.EXISTING_Customer.getPassword());
+    public void completeLoginForm(String scenario) {
+        Login login = new Login(scenario);
+        loginPage.emailInputField.sendKeys(login.getEmailAddress());
+        loginPage.passwordInputField.sendKeys(login.getPassword());
         commonSteps.scrollDownToElement(loginPage.signButton);
         loginPage.signButton.click();
-        wait.until(ExpectedConditions.visibilityOfElementLocated(loginPage.viewProfileButton));
     }
     public boolean homeButtonIsDisplay(){
+        wait.until(ExpectedConditions.visibilityOfElementLocated(loginPage.notificationButton));
+        return driver.findElement(loginPage.notificationButton).isDisplayed();
+    }
 
-        return driver.findElement(loginPage.viewProfileButton).isDisplayed();
+    public String errorMessage(){
+        wait.until(ExpectedConditions.visibilityOfElementLocated(loginPage.loginErrorMessageText));
+        return driver.findElement(loginPage.loginErrorMessageText).getText();
     }
 }

@@ -4,6 +4,7 @@ import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import org.junit.Assert;
+import org.junit.jupiter.api.Assertions;
 import steps.libraries.CommonSteps;
 import steps.libraries.LoginStep;
 
@@ -15,14 +16,19 @@ public class LoginStepDefinition {
         commonSteps.OpenPage();
     }
 
-    @When("user is complete the login form with valid data")
-    public void userIsCompleteTheLoginFormWithValidData() {
-        loginStep.completeLoginForm();
+    @When("user complete the login form with {string}")
+    public void userIsCompleteTheLoginFormWithValidData(String data) {
+        loginStep.completeLoginForm(data);
         
     }
 
     @Then("user should be sign in")
     public void userShouldBeSignIn() {
         Assert.assertTrue(loginStep.homeButtonIsDisplay());
+    }
+
+    @Then("user should see {string} error")
+    public void userShouldError(String errorMessage) {
+        Assertions.assertEquals(errorMessage,loginStep.errorMessage());
     }
 }

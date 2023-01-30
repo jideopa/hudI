@@ -1,7 +1,13 @@
 @regression
 Feature: Login
 
-  Scenario: successful login feature
+  Background:
     Given user is on login page
-    When user is complete the login form with valid data
+
+  Scenario: successful login
+    When user complete the login form with "valid credential"
     Then user should be sign in
+
+  Scenario: unsuccessful login
+    When user complete the login form with "invalid credential"
+    Then user should see "We didn't recognize that email and/or password.Need help?" error
